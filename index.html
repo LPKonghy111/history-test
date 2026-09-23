@@ -2,110 +2,148 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>测测你像哪个历史人物</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(145deg,#0b0e14,#1a1f2c);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:1.2rem;color:#e9eef3}
-.app{max-width:700px;width:100%;background:rgba(18,24,33,.9);backdrop-filter:blur(16px);border-radius:2.5rem;padding:2rem 1.8rem;box-shadow:0 30px 50px rgba(0,0,0,.7),0 0 0 1px rgba(255,215,100,.15)}
-.progress-area{margin-bottom:2rem}
-.progress-header{display:flex;justify-content:space-between;font-size:.9rem;color:#c0b7a8;margin-bottom:.5rem}
-.progress-bar-bg{width:100%;height:8px;background:#262d3a;border-radius:20px;overflow:hidden}
-.progress-fill{width:0;height:100%;background:linear-gradient(90deg,#d4af37,#f5e56b);border-radius:20px;transition:width .3s}
-.question-text{font-size:1.4rem;font-weight:600;line-height:1.5;margin-bottom:1.8rem;min-height:4rem;color:#f5f1e8}
-.options{display:flex;flex-direction:column;gap:1rem}
-.option-btn{background:#1e2532;border:1.5px solid #384252;border-radius:2.5rem;padding:1.1rem 1.5rem;font-size:1rem;color:#dfe6f0;text-align:left;cursor:pointer;transition:all .2s;font-family:inherit}
-.option-btn:hover{background:#2d3748;border-color:#d4af37}
-.result-container{display:none;flex-direction:column;align-items:center;text-align:center}
-.result-title{font-size:1.2rem;letter-spacing:3px;color:#c9b07b;margin-bottom:.5rem}
-.result-mbti{font-size:1.3rem;font-weight:700;color:#e9d7a5;background:#1e1e1e60;padding:.3rem 1.5rem;border-radius:40px;letter-spacing:2px;margin-bottom:.8rem;border:1px solid #d4af3750}
-.result-name{font-size:2.4rem;font-weight:700;background:linear-gradient(135deg,#f8e7b4,#d4af37,#b8942e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.8rem;line-height:1.2}
-.result-desc{font-size:1rem;line-height:1.7;color:#cbd5e1;text-align:left;margin:1.5rem 0 2rem;padding:1.5rem;background:#0f131cb0;border-radius:1.5rem;border-left:6px solid #d4af37;max-height:380px;overflow-y:auto}
-.result-desc p{margin-bottom:1rem}
-.reset-btn{background:transparent;border:1.5px solid #d4af37;color:#d4af37;padding:.8rem 2.2rem;border-radius:3rem;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
-.reset-btn:hover{background:#d4af37;color:#0b0e14}
-.hidden{display:none!important}
+body{font-family:system-ui,sans-serif;background:linear-gradient(145deg,#0b0e14,#1a1f2c);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:1.2rem;color:#e9eef3}
+.app{max-width:700px;width:100%;background:rgba(18,24,33,.9);border-radius:2.5rem;padding:2rem 1.8rem;box-shadow:0 30px 50px rgba(0,0,0,.7)}
+.p{margin-bottom:1.8rem}
+.ph{display:flex;justify-content:space-between;font-size:.9rem;color:#c0b7a8;margin-bottom:.5rem}
+.pb{width:100%;height:8px;background:#262d3a;border-radius:20px;overflow:hidden}
+.pf{width:0;height:100%;background:linear-gradient(90deg,#d4af37,#f5e56b);transition:width .3s}
+.qt{font-size:1.4rem;font-weight:600;line-height:1.5;margin-bottom:1.8rem;min-height:4rem;color:#f5f1e8}
+.o{display:flex;flex-direction:column;gap:1rem}
+.ob{background:#1e2532;border:1.5px solid #384252;border-radius:2.5rem;padding:1.1rem 1.5rem;font-size:1rem;color:#dfe6f0;text-align:left;cursor:pointer;font-family:inherit}
+.ob:hover{background:#2d3748;border-color:#d4af37}
+.rc{display:none;flex-direction:column;align-items:center;text-align:center}
+.rt{font-size:1.2rem;letter-spacing:3px;color:#c9b07b;margin-bottom:.5rem}
+.rm{font-size:1.3rem;font-weight:700;color:#e9d7a5;background:#1e1e1e60;padding:.3rem 1.5rem;border-radius:40px;letter-spacing:2px;margin-bottom:.8rem}
+.rn{font-size:2.4rem;font-weight:700;background:linear-gradient(135deg,#f8e7b4,#d4af37);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.8rem}
+.rd{font-size:1rem;line-height:1.7;color:#cbd5e1;text-align:left;margin:1.5rem 0 2rem;padding:1.5rem;background:#0f131cb0;border-radius:1.5rem;border-left:6px solid #d4af37;max-height:380px;overflow-y:auto}
+.rb{background:transparent;border:1.5px solid #d4af37;color:#d4af37;padding:.8rem 2.2rem;border-radius:3rem;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+.rb:hover{background:#d4af37;color:#0b0e14}
+.h{display:none!important}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="progress-area" id="progressArea">
-    <div class="progress-header"><span>题目进度</span><span id="progressText">0 / 48</span></div>
-    <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
-  </div>
-  <div id="quizSection">
-    <div class="question-text" id="questionText">加载中...</div>
-    <div class="options" id="optionsContainer"></div>
-  </div>
-  <div class="result-container" id="resultSection">
-    <div class="result-title">你的历史镜像</div>
-    <div class="result-mbti" id="resultMbti">INTJ</div>
-    <div class="result-name" id="resultName">诸葛亮</div>
-    <div class="result-desc" id="resultDesc"></div>
-    <button class="reset-btn" id="resetBtn">重新测试</button>
-  </div>
+<div class="p" id="p">
+<div class="ph"><span>题目进度</span><span id="pt">0 / 48</span></div>
+<div class="pb"><div class="pf" id="pf"></div></div>
+</div>
+<div id="q">
+<div class="qt" id="qt">加载中...</div>
+<div class="o" id="o"></div>
+</div>
+<div class="rc" id="r">
+<div class="rt">你的历史镜像</div>
+<div class="rm" id="rm">INTJ</div>
+<div class="rn" id="rn">诸葛亮</div>
+<div class="rd" id="rd"></div>
+<button class="rb" id="rb">重新测试</button>
+</div>
 </div>
 <script>
-// ========== 48道题 (每题两个选项, 分别对应维度两极) ==========
-var questions = [
-{q:"你通常更喜欢：",a:"独处或与少数密友相处",b:"参加热闹的聚会",d:"EI"},
-{q:"你更关注：",a:"现实和具体细节",b:"未来和抽象可能",d:"SN"},
-{q:"做决定时，你更看重：",a:"逻辑和客观事实",b:"情感和他人感受",d:"TF"},
-{q:"你的生活方式更偏向：",a:"计划性和条理",b:"灵活性和随性",d:"JP"},
-{q:"在社交场合，你通常：",a:"主动介绍自己，融入对话",b:"等待别人来搭话，先观察",d:"EI"},
-{q:"你更容易注意到：",a:"具体的细节和事实",b:"宏观的模式和隐喻",d:"SN"},
-{q:"你认为更重要的是：",a:"公正和一致性",b:"和谐与宽容",d:"TF"},
-{q:"你更喜欢的做事方式是：",a:"提前计划，按时完成",b:"保持开放，随性发挥",d:"JP"},
-{q:"你更常：",a:"表达自己的想法",b:"把想法留在心里",d:"EI"},
-{q:"你更倾向于相信：",a:"经验与已验证的方法",b:"直觉与灵感",d:"SN"},
-{q:"当朋友遇到困难，你通常：",a:"提供解决方案和建议",b:"给予情感支持和倾听",d:"TF"},
-{q:"你的工作空间通常是：",a:"整洁有序，井井有条",b:"充满创意，有些杂乱",d:"JP"},
-{q:"在聚会中，你：",a:"认识很多新朋友，活力四射",b:"和少数熟悉的人深入交谈",d:"EI"},
-{q:"你更看重：",a:"能力与效率",b:"仁慈与同理心",d:"TF"},
-{q:"你更喜欢阅读：",a:"实用指南或历史纪实",b:"科幻小说或哲学随笔",d:"SN"},
-{q:"你更倾向于：",a:"先完成工作再娱乐",b:"边玩边做，灵活安排",d:"JP"},
-{q:"你通常：",a:"主动发起活动",b:"等待他人邀请",d:"EI"},
-{q:"你认为自己更：",a:"理性客观",b:"感性同情",d:"TF"},
-{q:"你更容易记住：",a:"具体的事件和数字",b:"整体的印象和感觉",d:"SN"},
-{q:"你更愿意：",a:"按计划表行事",b:"顺其自然，随遇而安",d:"JP"},
-{q:"在会议上，你：",a:"踊跃发言，主导讨论",b:"倾听为主，深思熟虑",d:"EI"},
-{q:"你更欣赏：",a:"逻辑严谨的论证",b:"温暖人心的故事",d:"TF"},
-{q:"你更倾向于：",a:"关注现实与可行性",b:"关注未来与可能性",d:"SN"},
-{q:"你的生活方式更偏向：",a:"规律和稳定",b:"灵活和即兴",d:"JP"},
-{q:"你更喜欢：",a:"成为众人焦点",b:"在幕后支持",d:"EI"},
-{q:"做决策时，你更看重：",a:"事实与证据",b:"人情与关系",d:"TF"},
-{q:"你更容易被：",a:"具体的奖励激励",b:"精神上的满足激励",d:"SN"},
-{q:"你更倾向于：",a:"提前完成任务",b:"在截止日期前冲刺",d:"JP"},
-{q:"你通常：",a:"喜欢结识新朋友",b:"珍视老朋友",d:"EI"},
-{q:"你更认同：",a:"真理高于一切",b:"爱能战胜一切",d:"TF"},
-{q:"你更擅长：",a:"处理具体事务",b:"构思抽象概念",d:"SN"},
-{q:"你更喜欢：",a:"确定性和可预测性",b:"惊喜和意外",d:"JP"},
-{q:"在讨论中，你：",a:"喜欢直接表达观点",b:"喜欢先思考再发言",d:"EI"},
-{q:"你更注重：",a:"效率和结果",b:"感受和过程",d:"TF"},
-{q:"你更可能：",a:"信任经验",b:"信任直觉",d:"SN"},
-{q:"你的工作风格：",a:"有条不紊，按部就班",b:"灵活多变，随性而为",d:"JP"},
-{q:"你更愿意：",a:"领导团队",b:"独自研究",d:"EI"},
-{q:"你认为自己更：",a:"头脑冷静",b:"热心肠",d:"TF"},
-{q:"你更关注：",a:"现在的情况",b:"未来的发展",d:"SN"},
-{q:"你更偏向：",a:"计划性",b:"自发性",d:"JP"},
-{q:"你更容易：",a:"主动与人交谈",b:"保持沉默观察",d:"EI"},
-{q:"你更看重：",a:"公平正义",b:"同理关怀",d:"TF"},
-{q:"你更喜欢：",a:"具体的操作",b:"抽象的理论",d:"SN"},
-{q:"你更倾向于：",a:"提前做好安排",b:"到时候再说",d:"JP"},
-{q:"你通常：",a:"精力充沛，喜欢热闹",b:"安静内敛，享受独处",d:"EI"},
-{q:"你更相信：",a:"眼见为实",b:"第六感",d:"SN"},
-{q:"你更愿意：",a:"坚持原则",b:"通融处理",d:"TF"},
-{q:"你更喜欢：",a:"按部就班",b:"随机应变",d:"JP"}
+var Q=[
+["你通常更喜欢：","独处或少数密友相处","参加热闹的聚会","EI"],
+["你更关注：","现实和具体细节","未来和抽象可能","SN"],
+["做决定时你更看重：","逻辑和客观事实","情感和他人感受","TF"],
+["你的生活方式更偏向：","计划性和条理","灵活性和随性","JP"],
+["在社交场合你通常：","主动介绍自己，融入对话","等待别人来搭话，先观察","EI"],
+["你更容易注意到：","具体的细节和事实","宏观的模式和隐喻","SN"],
+["你认为更重要的是：","公正和一致性","和谐与宽容","TF"],
+["你更喜欢的做事方式：","提前计划，按时完成","保持开放，随性发挥","JP"],
+["你更常：","表达自己的想法","把想法留在心里","EI"],
+["你更倾向于相信：","经验与已验证的方法","直觉与灵感","SN"],
+["当朋友遇到困难你通常：","提供解决方案和建议","给予情感支持和倾听","TF"],
+["你的工作空间通常是：","整洁有序，井井有条","充满创意，有些杂乱","JP"],
+["在聚会中你：","认识很多新朋友，活力四射","和少数熟悉的人深入交谈","EI"],
+["你更看重：","能力与效率","仁慈与同理心","TF"],
+["你更喜欢阅读：","实用指南或历史纪实","科幻小说或哲学随笔","SN"],
+["你更倾向于：","先完成工作再娱乐","边玩边做，灵活安排","JP"],
+["你通常：","主动发起活动","等待他人邀请","EI"],
+["你认为自己更：","理性客观","感性同情","TF"],
+["你更容易记住：","具体的事件和数字","整体的印象和感觉","SN"],
+["你更愿意：","按计划表行事","顺其自然，随遇而安","JP"],
+["在会议上你：","踊跃发言，主导讨论","倾听为主，深思熟虑","EI"],
+["你更欣赏：","逻辑严谨的论证","温暖人心的故事","TF"],
+["你更倾向于：","关注现实与可行性","关注未来与可能性","SN"],
+["你的生活方式更偏向：","规律和稳定","灵活和即兴","JP"],
+["你更喜欢：","成为众人焦点","在幕后支持","EI"],
+["做决策时你更看重：","事实与证据","人情与关系","TF"],
+["你更容易被：","具体的奖励激励","精神上的满足激励","SN"],
+["你更倾向于：","提前完成任务","在截止日期前冲刺","JP"],
+["你通常：","喜欢结识新朋友","珍视老朋友","EI"],
+["你更认同：","真理高于一切","爱能战胜一切","TF"],
+["你更擅长：","处理具体事务","构思抽象概念","SN"],
+["你更喜欢：","确定性和可预测性","惊喜和意外","JP"],
+["在讨论中你：","喜欢直接表达观点","喜欢先思考再发言","EI"],
+["你更注重：","效率和结果","感受和过程","TF"],
+["你更可能：","信任经验","信任直觉","SN"],
+["你的工作风格：","有条不紊，按部就班","灵活多变，随性而为","JP"],
+["你更愿意：","领导团队","独自研究","EI"],
+["你认为自己更：","头脑冷静","热心肠","TF"],
+["你更关注：","现在的情况","未来的发展","SN"],
+["你更偏向：","计划性","自发性","JP"],
+["你更容易：","主动与人交谈","保持沉默观察","EI"],
+["你更看重：","公平正义","同理关怀","TF"],
+["你更喜欢：","具体的操作","抽象的理论","SN"],
+["你更倾向于：","提前做好安排","到时候再说","JP"],
+["你通常：","精力充沛，喜欢热闹","安静内敛，享受独处","EI"],
+["你更相信：","眼见为实","第六感","SN"],
+["你更愿意：","坚持原则","通融处理","TF"],
+["你更喜欢：","按部就班","随机应变","JP"]
 ];
-
-// ========== 32个人物 ==========
-var characters = [
-{m:"INTJ",n:"诸葛亮",d:"荣格八维：Ni-Te-Fi-Se。你拥有深邃的洞察力与战略远见，善于在混沌中构建秩序。如同卧龙先生，你习惯先观察全局，再以严谨的逻辑制定长远规划。独立、冷静，对目标有近乎偏执的坚持。但内心深处藏着对理想社会的热忱，只是不轻易示人。你享受智力挑战，讨厌低效与混乱，是天生的谋略家。偶尔会因过于追求完美而显得孤高，但正是这份淡泊明志的气质，让你在关键时刻能做出影响深远的决策。"},
-{m:"INTP",n:"亚里士多德",d:"荣格八维：Ti-Ne-Si-Fe。你像古希腊的哲人，以逻辑为刀，解剖世界的本质。Ti主导让你对概念精准度要求极高，Ne则让你不断联想、发散。你享受纯粹的知识探索，不为功利，只为理解。你可能有些书卷气，说话喜欢引经据典，但在人群中常显得抽离。你温和而好奇，试图为万物分类，建立自己的知识体系。你的内在世界丰富而有序，是典型的思想者。"},
-{m:"ENTJ",n:"秦始皇",d:"荣格八维：Te-Ni-Se-Fi。你具有强大的执行力和战略野心，是天生的领袖。Te主导让你以结果为导向，高效组织资源，推动变革。Ni赋予你远见，能预见未来的格局。你敢于打破旧秩序，建立新规则。自信、果断，甚至有些专制，但内心也有对认同的渴望。你追求的是宏大叙事，是统一与秩序的象征。"},
-{m:"ENTP",n:"苏格拉底",d:"荣格八维：Ne-Ti-Fe-Si。你像雅典的牛虻，不断追问，挑战常识。Ne主导让你思维跳跃，善于发现可能性，而Ti让你能迅速剖析逻辑漏洞。你喜欢辩论，不是为了赢，而是为了逼近真理。你幽默、机智，常以反诘法启发他人。你讨厌僵化，喜欢探索新观念。你的人生是一场持续的对话，你在其中不断重塑自我。"},
-{m:"INFJ",n:"甘地",d:"荣格八维：Ni-Fe-Ti-Se。你拥有坚定的内在信念与对人性的深刻洞察。Ni让你看到理想社会的图景，Fe则让你对他人苦难感同身受。你像圣雄甘地一样，以非暴力方式追求正义，用精神力量感召他人。你安静却极具影响力，善于用隐喻和象征传递理念。你对自己要求严格，追求意义而非享乐。你的坚持能照亮无数人的道路。"},
-{m:"INFP",n:"圣女贞德",d:"荣格八维：Fi-Ne-Si-Te。你内心燃烧着纯粹的热情与道德感。Fi主导让你有坚定的价值观，Ne则让你看到别人看不到的可能性。你像贞德一样，听从内心的声音，勇敢地站出来。你温柔却坚韧，愿意为信仰付出一切。你善于用故事和象征鼓舞他人，你的力量来自对善的绝对忠诚，那种虽千万人吾往矣的勇气，正是你最动人的特质。"},
-{m:"ENFJ",n:"马丁·路德·金",d:"荣格八维：Fe-Ni-Se-Ti。你天生具有鼓舞人心的能力，能凝聚群体，为共同愿景奋斗。Fe主导让你关注他人情感，Ni则让你有清晰的愿景。你像马丁·路德·金一样，用演说点燃希望，用行动推动变革。你富有魅力，善于沟通，能理解不同人的需求。你追求的是平等与爱。你的热情与感染力，能让世界变得更好。"},
-{m:"ENFP",n:"莎士比亚",d:"荣格八维：Ne-Fi-Te-Si。你充满创意与热情，像莎士比亚一样，能塑造无数鲜活的角色。Ne主导让你思维奔逸，灵感不断，Fi则让你对人性有深刻体察。你善于表达，喜欢用隐喻和戏剧性语言。你好奇心强，讨厌单调，总在寻找新的可能性。正是这种一切皆有可能的开放心态，让你能创作出触动人心的作品。"},
-{m:"ISTJ",n:"乔治·华盛顿"
+var C=[
+["INTJ","诸葛亮","荣格八维：Ni-Te-Fi-Se。你拥有深邃的洞察力与战略远见，善于在混沌中构建秩序。如同卧龙先生，你习惯先观察全局，再以严谨的逻辑制定长远规划。独立、冷静，对目标有近乎偏执的坚持，但内心深处藏着对理想社会的热忱，只是不轻易示人。你享受智力挑战，讨厌低效与混乱，是天生的谋略家。偶尔会因过于追求完美而显得孤高，但正是这份淡泊明志的气质，让你在关键时刻能做出影响深远的决策。"],
+["INTP","亚里士多德","荣格八维：Ti-Ne-Si-Fe。你像古希腊的哲人，以逻辑为刀，解剖世界的本质。Ti主导让你对概念精准度要求极高，Ne则让你不断联想、发散。你享受纯粹的知识探索，不为功利，只为理解。你可能有些书卷气，说话喜欢引经据典，但在人群中常显得抽离。你温和而好奇，试图为万物分类，建立自己的知识体系。你的内在世界丰富而有序，是典型的思想者。"],
+["ENTJ","秦始皇","荣格八维：Te-Ni-Se-Fi。你具有强大的执行力和战略野心，是天生的领袖。Te主导让你以结果为导向，高效组织资源，推动变革。Ni赋予你远见，能预见未来的格局。你敢于打破旧秩序，建立新规则。自信、果断，甚至有些专制，但内心也有对认同的渴望。你追求的是宏大叙事，是统一与秩序的象征。"],
+["ENTP","苏格拉底","荣格八维：Ne-Ti-Fe-Si。你像雅典的牛虻，不断追问，挑战常识。Ne主导让你思维跳跃，善于发现可能性，而Ti让你能迅速剖析逻辑漏洞。你喜欢辩论，不是为了赢，而是为了逼近真理。你幽默、机智，常以反诘法启发他人。你讨厌僵化，喜欢探索新观念。你的人生是一场持续的对话，你在其中不断重塑自我。"],
+["INFJ","甘地","荣格八维：Ni-Fe-Ti-Se。你拥有坚定的内在信念与对人性的深刻洞察。Ni让你看到理想社会的图景，Fe则让你对他人苦难感同身受。你像圣雄甘地一样，以非暴力方式追求正义，用精神力量感召他人。你安静却极具影响力，善于用隐喻和象征传递理念。你对自己要求严格，追求意义而非享乐。你的坚持能照亮无数人的道路。"],
+["INFP","圣女贞德","荣格八维：Fi-Ne-Si-Te。你内心燃烧着纯粹的热情与道德感。Fi主导让你有坚定的价值观，Ne则让你看到别人看不到的可能性。你像贞德一样，听从内心的声音，勇敢地站出来。你温柔却坚韧，愿意为信仰付出一切。你善于用故事和象征鼓舞他人，你的力量来自对善的绝对忠诚，那种虽千万人吾往矣的勇气，正是你最动人的特质。"],
+["ENFJ","马丁·路德·金","荣格八维：Fe-Ni-Se-Ti。你天生具有鼓舞人心的能力，能凝聚群体，为共同愿景奋斗。Fe主导让你关注他人情感，Ni则让你有清晰的愿景。你像马丁·路德·金一样，用演说点燃希望，用行动推动变革。你富有魅力，善于沟通，能理解不同人的需求。你追求的是平等与爱。你的热情与感染力，能让世界变得更好。"],
+["ENFP","莎士比亚","荣格八维：Ne-Fi-Te-Si。你充满创意与热情，像莎士比亚一样，能塑造无数鲜活的角色。Ne主导让你思维奔逸，灵感不断，Fi则让你对人性有深刻体察。你善于表达，喜欢用隐喻和戏剧性语言。你好奇心强，讨厌单调，总在寻找新的可能性。正是这种一切皆有可能的开放心态，让你能创作出触动人心的作品。"],
+["ISTJ","乔治·华盛顿","荣格八维：Si-Te-Fi-Ne。你像华盛顿一样，是可靠、自律的典范。Si主导让你重视传统、秩序与责任，Te则让你高效地完成任务。你务实、严谨，信守承诺，是团队中的定海神针。你可能不喜变化，但一旦认定目标，便会坚定不移。你低调而正直，在权力面前选择退隐，因为你知道责任高于一切。"],
+["ISFJ","曾国藩","荣格八维：Si-Fe-Ti-Ne。你像曾国藩一样，以拙诚和恒心立身。Si让你注重细节与经验，Fe则让你关心他人，维护和谐。你谦逊、勤勉，做事一步一个脚印。你擅长在体制内运作，以柔克刚。你重视家庭与责任，是典型的守护者。你的稳重与忠诚，能赢得长久的信任。"],
+["ESTJ","拿破仑","荣格八维：Te-Si-Ne-Fi。你像拿破仑一样，是行动力超强的统帅。Te主导让你善于组织、指挥，迅速取得成果。Si让你重视纪律与经验，Ne则给你战术上的灵活。你自信、果断，喜欢掌控局面。你追求的是荣耀与秩序，愿意为此付出巨大代价。你的效率与魄力，确实能改变历史进程。"],
+["ESFJ","伊丽莎白一世","荣格八维：Fe-Si-Ne-Ti。你像伊丽莎白一世一样，善于平衡各方势力，维护国家稳定。Fe主导让你关注人际和谐，Si则让你尊重传统与礼仪。你精明、务实，懂得如何用外交手腕达成目标。你重视形象与责任，是女王般的存在。你的亲和力与政治智慧，让你能团结大多数人。"],
+["ISTP","达芬奇","荣格八维：Ti-Se-Ni-Fe。你像达芬奇一样，是冷静的观察者与天才的工匠。Ti主导让你分析事物的运作原理，Se则让你拥有敏锐的感官与动手能力。你好奇、独立，喜欢拆解和重建。你可能沉默寡言，但双手灵巧，能创造出惊人的作品。你追求的是理解与精准，而不是名利。"],
+["ISFP","玛丽·居里","荣格八维：Fi-Se-Ni-Te。你像居里夫人一样，安静而专注，为科学献身。Fi主导让你有坚定的内在价值，Se则让你在实验中细致入微。你谦逊、坚韧，不被荣誉所累。你更愿意待在实验室，而不是社交场。你追求的是真理与纯粹，你的奉献精神，照亮了科学之路。"],
+["ESTP","海明威","荣格八维：Se-Ti-Fe-Ni。你像海明威一样，热爱冒险与行动。Se主导让你活在当下，享受感官刺激，Ti则让你冷静分析。你直率、勇敢，喜欢挑战极限。你追求的是真实与体验，无论是战争、狩猎还是写作。你讨厌空谈，喜欢用简洁有力的语言表达。你的生命力与行动力，正是你魅力的来源。"],
+["ESFP","香奈儿","荣格八维：Se-Fi-Te-Ni。你像可可·香奈儿一样，是时尚的缔造者。Se主导让你对美有敏锐的直觉，Fi则让你坚持自我风格。你活泼、自信，喜欢成为焦点。你追求的是自由与优雅，敢于打破常规。你善于社交，能影响潮流。你的创造力和感染力，让你成为时代的符号。"],
+["INTJ","特斯拉","荣格八维：Ni-Te-Fi-Se。你像尼古拉·特斯拉一样，是疯狂的天才。Ni让你看到未来的科技蓝图，Te让你将想象变为现实。你偏执、孤独，但内心有对人类的博爱。你追求的是无线输电这样的宏大理想，而不在乎金钱。你的发明改变了世界，你的大脑里装着整个宇宙。"],
+["INFP","老子","荣格八维：Fi-Ne-Si-Te。你像老子一样，崇尚自然与无为。Fi让你追求内在的和谐，Ne让你看到万物的联系。你安静、深邃，不喜欢争斗。你相信柔弱胜刚强，用隐喻和悖论表达智慧。你适合在宁静中思考，在独处中找到力量。你的存在本身就是一种提醒：回归本真。"],
+["ENTP","庄子","荣格八维：Ne-Ti-Fe-Si。你像庄子一样，是自由的灵魂。Ne让你想象鲲鹏展翅，Ti让你解构世俗观念。你幽默、洒脱，喜欢用寓言故事说理。你讨厌束缚，追求精神的绝对自由。你善于辩论，但更爱逍遥游。你的人生是一场游戏，而你乐在其中。"],
+["INFJ","林肯","荣格八维：Ni-Fe-Ti-Se。你像林肯一样，有深邃的远见与悲悯之心。Ni让你看到国家的命运，Fe让你对奴隶制深恶痛绝。你坚毅、隐忍，在逆境中保持信念。你善于用故事和比喻打动人心。你的民有、民治、民享理想，让你成为伟大的领袖。你的力量来自对正义的执着。"],
+["ESTJ","俾斯麦","荣格八维：Te-Si-Ne-Fi。你像俾斯麦一样，是现实政治的大师。Te让你高效推进目标，Si让你尊重传统，Ne让你灵活应变。你铁血、务实，相信真理在大炮射程之内。你善于权谋，但内心也有对国家的忠诚。你是一个复杂的战略家，用铁血政策改变了历史。"],
+["ISFJ","南丁格尔","荣格八维：Si-Fe-Ti-Ne。你像南丁格尔一样，是温柔的守护者。Si让你注重细节与卫生，Fe让你对病人充满关怀。你坚韧、无私，在克里米亚战场上提灯巡视。你善于组织护理工作，但更以爱心闻名。你相信护理是一门艺术，你的存在让伤痛减轻。你是真正的白衣天使。"],
+["ISFP","梵高","荣格八维：Fi-Se-Ni-Te。你像梵高一样，用生命作画。Fi让你情感炽烈，Se让你对色彩极度敏感。你孤独、疯狂，但内心有对美的狂热追求。你可能被误解，但你的星空中藏着宇宙的律动。你追求的是表达而非技巧，你的画布上都是你的灵魂。你的人生短暂而绚烂。"],
+["ENFP","罗斯福","荣格八维：Ne-Fi-Te-Si。你像富兰克林·罗斯福一样，充满乐观与创意。Ne让你不断尝试新政，Fi让你关心底层民众。你善于沟通，用炉边谈话鼓舞人心。你灵活、变通，不惧打破传统。你相信唯一值得恐惧的就是恐惧本身，你的新政拯救了美国。"],
+["ENTJ","亚历山大大帝","荣格八维：Te-Ni-Se-Fi。你像亚历山大一样，渴望征服与荣耀。Te让你高效指挥军队，Ni让你有已知世界尽头的愿景。你勇敢、果决，喜欢挑战不可能。你追求的是伟大与传奇，愿意为此付出一切。你的名字将永远刻在历史上。"],
+["INFP","但丁","荣格八维：Fi-Ne-Si-Te。你像但丁一样，用诗歌构建地狱、炼狱与天堂。Fi让你对爱与正义有强烈感受，Ne让你想象宏大的彼岸世界。你敏感、执着，流放中仍坚持写作。你追求的是救赎与真理，你的神曲就是你的心灵旅程。你的文字能穿越时空。"],
+["ENTJ","叶卡捷琳娜大帝","荣格八维：Te-Ni-Se-Fi。你像叶卡捷琳娜一样，是开明专制的代表。Te让你高效治理国家，Ni让你有启蒙理想。你聪明、果敢，善于利用权力。你追求的是强大与进步，推动改革。你也有对艺术和爱情的热情。你是一个充满矛盾又极具魅力的统治者。"],
+["ISTJ","达尔文","荣格八维：Si-Te-Fi-Ne。你像达尔文一样，是严谨的观察者。Si让你积累大量事实，Te让你归纳出自然选择。你耐心、细致，在小猎犬号上收集标本。你追求的是证据与真理，不急于发表。你的理论改变了人类认知。你的坚持源于对科学的热爱。"],
+["INFJ","贝多芬","荣格八维：Ni-Fe-Ti-Se。你像贝多芬一样，与命运抗争。Ni让你听到命运敲门，Fe让你对人类的苦难充满同情。你暴躁、孤独，但内心有英雄般的激情。你追求的是自由与欢乐，你的第九交响曲就是证明。你扼住命运的咽喉，永不屈服。"],
+["ENFP","马克·吐温","荣格八维：Ne-Fi-Te-Si。你像马克·吐温一样，幽默而深刻。Ne让你妙语连珠，Fi让你对不公义愤怒。你善于讲故事，用讽刺揭露社会。你追求的是自由与真实，讨厌虚伪。你的哈克贝利·费恩是伟大的美国小说，你的幽默里藏着智慧。"],
+["ISFJ","居里夫人","荣格八维：Si-Fe-Ti-Ne。你像居里夫人一样，默默奉献。Si让你在实验室反复实验，Fe让你将镭用于治疗癌症。你谦逊、坚韧，两次获得诺贝尔奖却淡泊名利。你追求的是科学与人类福祉，你的笔记本至今仍有辐射。你是真正的科学圣徒。"],
+["ESTP","凯撒","荣格八维：Se-Ti-Fe-Ni。你像凯撒一样，行动果断，善于抓住机会。Se让你在战场上所向披靡，Ti让你分析政治局势。你自信、迷人，喜欢我来，我见，我征服。你追求的是权力与荣耀，但也推动改革。你的名字成为皇帝的代名词。"]
+];
+var i=0,a=[],s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+function el(id){return document.getElementById(id)}
+function up(){var d=a.filter(function(x){return x!==null}).length;el("pt").textContent=d+" / "+Q.length;el("pf").style.width=(d/Q.length*100)+"%"}
+function show(){
+if(i>=Q.length){el("q").style.display="none";el("r").style.display="flex";el("p").classList.add("h");
+var m=(s.E>=s.I?"E":"I")+(s.S>=s.N?"S":"N")+(s.T>=s.F?"T":"F")+(s.J>=s.P?"J":"P");
+var f=null;for(var k=0;k<C.length;k++){if(C[k][0]===m){f=C[k];break}}if(!f)f=C[0];
+el("rm").textContent=f[0];el("rn").textContent=f[1];
+var d=f[2];if(d.length<400)d+=" 你拥有独特的荣格八维功能组合，在现实生活中会展现出强烈的个人风格。无论是决策方式还是人际互动，你都倾向于跟随内心的判断。历史长河中，与你相似的人物往往在关键时刻发挥重要作用，因为他们坚持自我，不随波逐流。";
+el("rd").innerHTML="<p>"+d+"</p>";return}
+var q=Q[i];el("qt").textContent=q[0];el("o").innerHTML="";
+for(var j=1;j<=2;j++){var b=document.createElement("button");b.className="ob";b.textContent=q[j];b.setAttribute("data-j",j);b.onclick=function(){a[i]=this.getAttribute("data-j")-1;calc();if(i<Q.length-1){i++;show()}else{show()}up()};el("o").appendChild(b)}up()}
+function calc(){s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};for(var k=0;k<Q.length;k++){if(a[k]===null)continue;var d=Q[k][3];if(a[k]===0)s[d[0]]++;else s[d[1]]++}}
+function reset(){i=0;a=[];s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};el("q").style.display="block";el("r").style.display="none";el("p").classList.remove("h");show()}
+el("rb").onclick=reset;reset();
+</script>
+</body>
+</html>
