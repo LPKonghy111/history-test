@@ -1,301 +1,111 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>测测你像哪个历史人物 · 荣格八维·MBTI</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(145deg, #0b0e14 0%, #1a1f2c 100%);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
-      margin: 0;
-      color: #e9eef3;
-    }
-
-    .app {
-      max-width: 900px;
-      width: 100%;
-      background: rgba(18, 24, 33, 0.85);
-      backdrop-filter: blur(16px);
-      border-radius: 3.5rem;
-      padding: 2rem 2.5rem;
-      box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 215, 100, 0.15);
-      transition: all 0.2s;
-    }
-
-    /* 进度区域 */
-    .progress-area {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      margin-bottom: 2.2rem;
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.95rem;
-      letter-spacing: 0.3px;
-      font-weight: 500;
-      color: #c0b7a8;
-      text-transform: uppercase;
-    }
-
-    .progress-bar-bg {
-      width: 100%;
-      height: 8px;
-      background: #262d3a;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 4px #00000055;
-    }
-
-    .progress-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #d4af37, #f5e56b, #c9a227);
-      border-radius: 20px;
-      box-shadow: 0 0 10px #f5e56b;
-      transition: width 0.35s cubic-bezier(0.2, 0.9, 0.3, 1);
-    }
-
-    /* 题目卡片 */
-    .question-container {
-      margin-bottom: 2rem;
-    }
-
-    .question-text {
-      font-size: 1.6rem;
-      font-weight: 600;
-      line-height: 1.4;
-      margin-bottom: 2rem;
-      text-shadow: 0 2px 5px #00000040;
-      color: #f5f1e8;
-      min-height: 4.5rem;
-      display: flex;
-      align-items: center;
-    }
-
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .option-btn {
-      background: #1e2532;
-      border: 1.5px solid #384252;
-      border-radius: 2.5rem;
-      padding: 1.2rem 1.8rem;
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #dfe6f0;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 6px 12px #00000030;
-      letter-spacing: 0.2px;
-      backdrop-filter: blur(4px);
-    }
-
-    .option-btn:hover {
-      background: #2d3748;
-      border-color: #d4af37;
-      transform: translateY(-2px);
-      box-shadow: 0 12px 20px #00000055, 0 0 0 1px #d4af37aa;
-    }
-
-    .option-btn.selected {
-      background: #2e3b2e;
-      border-color: #b89b3c;
-      box-shadow: 0 0 0 2px #d4af37, 0 10px 20px #00000050;
-      color: #fff8e0;
-    }
-
-    /* 结果区域 */
-    .result-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      animation: fade 0.5s ease;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .result-title {
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #c9b07b;
-      font-weight: 400;
-      margin-bottom: 0.5rem;
-    }
-
-    .result-mbti {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #e9d7a5;
-      background: #1e1e1e60;
-      padding: 0.3rem 1.5rem;
-      border-radius: 40px;
-      letter-spacing: 2px;
-      margin-bottom: 0.8rem;
-      border: 1px solid #d4af3750;
-    }
-
-    .result-name {
-      font-size: 3rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #f8e7b4, #d4af37, #b8942e);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.8rem;
-      line-height: 1.2;
-      text-shadow: 0 0 20px #d4af3740;
-    }
-
-    .result-desc {
-      font-size: 1.05rem;
-      line-height: 1.7;
-      color: #cbd5e1;
-      text-align: left;
-      margin: 1.8rem 0 2rem;
-      padding: 1.8rem;
-      background: #0f131cb0;
-      border-radius: 2rem;
-      border-left: 6px solid #d4af37;
-      border-right: 1px solid #d4af3720;
-      max-height: 400px;
-      overflow-y: auto;
-      box-shadow: inset 0 0 30px #00000030;
-    }
-
-    .result-desc p {
-      margin-bottom: 1.2rem;
-    }
-
-    .result-desc p:last-child {
-      margin-bottom: 0;
-    }
-
-    .result-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 0.8rem;
-    }
-
-    .reset-btn {
-      background: transparent;
-      border: 1.5px solid #d4af37;
-      color: #d4af37;
-      padding: 0.9rem 2.5rem;
-      border-radius: 3rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .reset-btn:hover {
-      background: #d4af37;
-      color: #0b0e14;
-      box-shadow: 0 0 25px #d4af37aa;
-    }
-
-    /* 隐藏类 */
-    .hidden {
-      display: none !important;
-    }
-
-    /* 响应式 */
-    @media (max-width: 600px) {
-      .app {
-        padding: 1.8rem 1.2rem;
-        border-radius: 2rem;
-      }
-      .question-text {
-        font-size: 1.3rem;
-      }
-      .option-btn {
-        padding: 1rem 1.2rem;
-        font-size: 1rem;
-      }
-      .result-name {
-        font-size: 2rem;
-      }
-      .result-desc {
-        padding: 1.2rem;
-        font-size: 0.95rem;
-      }
-    }
-
-    /* 滚动条 */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #1a1f2c;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #d4af37;
-      border-radius: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>测测你像哪个历史人物</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:linear-gradient(145deg,#0b0e14,#1a1f2c);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:1.2rem;color:#e9eef3}
+.app{max-width:700px;width:100%;background:rgba(18,24,33,.9);backdrop-filter:blur(16px);border-radius:2.5rem;padding:2rem 1.8rem;box-shadow:0 30px 50px rgba(0,0,0,.7),0 0 0 1px rgba(255,215,100,.15)}
+.progress-area{margin-bottom:2rem}
+.progress-header{display:flex;justify-content:space-between;font-size:.9rem;color:#c0b7a8;margin-bottom:.5rem}
+.progress-bar-bg{width:100%;height:8px;background:#262d3a;border-radius:20px;overflow:hidden}
+.progress-fill{width:0;height:100%;background:linear-gradient(90deg,#d4af37,#f5e56b);border-radius:20px;transition:width .3s}
+.question-text{font-size:1.4rem;font-weight:600;line-height:1.5;margin-bottom:1.8rem;min-height:4rem;color:#f5f1e8}
+.options{display:flex;flex-direction:column;gap:1rem}
+.option-btn{background:#1e2532;border:1.5px solid #384252;border-radius:2.5rem;padding:1.1rem 1.5rem;font-size:1rem;color:#dfe6f0;text-align:left;cursor:pointer;transition:all .2s;font-family:inherit}
+.option-btn:hover{background:#2d3748;border-color:#d4af37}
+.result-container{display:none;flex-direction:column;align-items:center;text-align:center}
+.result-title{font-size:1.2rem;letter-spacing:3px;color:#c9b07b;margin-bottom:.5rem}
+.result-mbti{font-size:1.3rem;font-weight:700;color:#e9d7a5;background:#1e1e1e60;padding:.3rem 1.5rem;border-radius:40px;letter-spacing:2px;margin-bottom:.8rem;border:1px solid #d4af3750}
+.result-name{font-size:2.4rem;font-weight:700;background:linear-gradient(135deg,#f8e7b4,#d4af37,#b8942e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.8rem;line-height:1.2}
+.result-desc{font-size:1rem;line-height:1.7;color:#cbd5e1;text-align:left;margin:1.5rem 0 2rem;padding:1.5rem;background:#0f131cb0;border-radius:1.5rem;border-left:6px solid #d4af37;max-height:380px;overflow-y:auto}
+.result-desc p{margin-bottom:1rem}
+.reset-btn{background:transparent;border:1.5px solid #d4af37;color:#d4af37;padding:.8rem 2.2rem;border-radius:3rem;font-size:1rem;font-weight:600;cursor:pointer;font-family:inherit}
+.reset-btn:hover{background:#d4af37;color:#0b0e14}
+.hidden{display:none!important}
+</style>
 </head>
 <body>
 <div class="app">
-  <!-- 进度条区域 -->
   <div class="progress-area" id="progressArea">
-    <div class="progress-header">
-      <span>题目进度</span>
-      <span id="progressText">0 / 48</span>
-    </div>
-    <div class="progress-bar-bg">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
+    <div class="progress-header"><span>题目进度</span><span id="progressText">0 / 48</span></div>
+    <div class="progress-bar-bg"><div class="progress-fill" id="progressFill"></div></div>
   </div>
-
-  <!-- 题目区 -->
   <div id="quizSection">
-    <div class="question-container">
-      <div class="question-text" id="questionText">加载中...</div>
-      <div class="options" id="optionsContainer"></div>
-    </div>
+    <div class="question-text" id="questionText">加载中...</div>
+    <div class="options" id="optionsContainer"></div>
   </div>
-
-  <!-- 结果区 -->
   <div class="result-container" id="resultSection">
     <div class="result-title">你的历史镜像</div>
     <div class="result-mbti" id="resultMbti">INTJ</div>
     <div class="result-name" id="resultName">诸葛亮</div>
-    <div class="result-desc" id="resultDesc">分析加载中...</div>
-    <div class="result-actions">
-      <button class="reset-btn" id="resetBtn">重新测试</button>
-    </div>
+    <div class="result-desc" id="resultDesc"></div>
+    <button class="reset-btn" id="resetBtn">重新测试</button>
   </div>
 </div>
 <script>
-  (function() {
-    // ---------- 48道题目 (结合荣格八维与MBTI倾向) -------*---
-    const questions = [
-      { text: "在团队中，你更倾向于：", options: ["规划长期战略，设定目标", "协调人际关系，鼓舞士气"], d
+// ========== 48道题 (每题两个选项, 分别对应维度两极) ==========
+var questions = [
+{q:"你通常更喜欢：",a:"独处或与少数密友相处",b:"参加热闹的聚会",d:"EI"},
+{q:"你更关注：",a:"现实和具体细节",b:"未来和抽象可能",d:"SN"},
+{q:"做决定时，你更看重：",a:"逻辑和客观事实",b:"情感和他人感受",d:"TF"},
+{q:"你的生活方式更偏向：",a:"计划性和条理",b:"灵活性和随性",d:"JP"},
+{q:"在社交场合，你通常：",a:"主动介绍自己，融入对话",b:"等待别人来搭话，先观察",d:"EI"},
+{q:"你更容易注意到：",a:"具体的细节和事实",b:"宏观的模式和隐喻",d:"SN"},
+{q:"你认为更重要的是：",a:"公正和一致性",b:"和谐与宽容",d:"TF"},
+{q:"你更喜欢的做事方式是：",a:"提前计划，按时完成",b:"保持开放，随性发挥",d:"JP"},
+{q:"你更常：",a:"表达自己的想法",b:"把想法留在心里",d:"EI"},
+{q:"你更倾向于相信：",a:"经验与已验证的方法",b:"直觉与灵感",d:"SN"},
+{q:"当朋友遇到困难，你通常：",a:"提供解决方案和建议",b:"给予情感支持和倾听",d:"TF"},
+{q:"你的工作空间通常是：",a:"整洁有序，井井有条",b:"充满创意，有些杂乱",d:"JP"},
+{q:"在聚会中，你：",a:"认识很多新朋友，活力四射",b:"和少数熟悉的人深入交谈",d:"EI"},
+{q:"你更看重：",a:"能力与效率",b:"仁慈与同理心",d:"TF"},
+{q:"你更喜欢阅读：",a:"实用指南或历史纪实",b:"科幻小说或哲学随笔",d:"SN"},
+{q:"你更倾向于：",a:"先完成工作再娱乐",b:"边玩边做，灵活安排",d:"JP"},
+{q:"你通常：",a:"主动发起活动",b:"等待他人邀请",d:"EI"},
+{q:"你认为自己更：",a:"理性客观",b:"感性同情",d:"TF"},
+{q:"你更容易记住：",a:"具体的事件和数字",b:"整体的印象和感觉",d:"SN"},
+{q:"你更愿意：",a:"按计划表行事",b:"顺其自然，随遇而安",d:"JP"},
+{q:"在会议上，你：",a:"踊跃发言，主导讨论",b:"倾听为主，深思熟虑",d:"EI"},
+{q:"你更欣赏：",a:"逻辑严谨的论证",b:"温暖人心的故事",d:"TF"},
+{q:"你更倾向于：",a:"关注现实与可行性",b:"关注未来与可能性",d:"SN"},
+{q:"你的生活方式更偏向：",a:"规律和稳定",b:"灵活和即兴",d:"JP"},
+{q:"你更喜欢：",a:"成为众人焦点",b:"在幕后支持",d:"EI"},
+{q:"做决策时，你更看重：",a:"事实与证据",b:"人情与关系",d:"TF"},
+{q:"你更容易被：",a:"具体的奖励激励",b:"精神上的满足激励",d:"SN"},
+{q:"你更倾向于：",a:"提前完成任务",b:"在截止日期前冲刺",d:"JP"},
+{q:"你通常：",a:"喜欢结识新朋友",b:"珍视老朋友",d:"EI"},
+{q:"你更认同：",a:"真理高于一切",b:"爱能战胜一切",d:"TF"},
+{q:"你更擅长：",a:"处理具体事务",b:"构思抽象概念",d:"SN"},
+{q:"你更喜欢：",a:"确定性和可预测性",b:"惊喜和意外",d:"JP"},
+{q:"在讨论中，你：",a:"喜欢直接表达观点",b:"喜欢先思考再发言",d:"EI"},
+{q:"你更注重：",a:"效率和结果",b:"感受和过程",d:"TF"},
+{q:"你更可能：",a:"信任经验",b:"信任直觉",d:"SN"},
+{q:"你的工作风格：",a:"有条不紊，按部就班",b:"灵活多变，随性而为",d:"JP"},
+{q:"你更愿意：",a:"领导团队",b:"独自研究",d:"EI"},
+{q:"你认为自己更：",a:"头脑冷静",b:"热心肠",d:"TF"},
+{q:"你更关注：",a:"现在的情况",b:"未来的发展",d:"SN"},
+{q:"你更偏向：",a:"计划性",b:"自发性",d:"JP"},
+{q:"你更容易：",a:"主动与人交谈",b:"保持沉默观察",d:"EI"},
+{q:"你更看重：",a:"公平正义",b:"同理关怀",d:"TF"},
+{q:"你更喜欢：",a:"具体的操作",b:"抽象的理论",d:"SN"},
+{q:"你更倾向于：",a:"提前做好安排",b:"到时候再说",d:"JP"},
+{q:"你通常：",a:"精力充沛，喜欢热闹",b:"安静内敛，享受独处",d:"EI"},
+{q:"你更相信：",a:"眼见为实",b:"第六感",d:"SN"},
+{q:"你更愿意：",a:"坚持原则",b:"通融处理",d:"TF"},
+{q:"你更喜欢：",a:"按部就班",b:"随机应变",d:"JP"}
+];
+
+// ========== 32个人物 ==========
+var characters = [
+{m:"INTJ",n:"诸葛亮",d:"荣格八维：Ni-Te-Fi-Se。你拥有深邃的洞察力与战略远见，善于在混沌中构建秩序。如同卧龙先生，你习惯先观察全局，再以严谨的逻辑制定长远规划。独立、冷静，对目标有近乎偏执的坚持。但内心深处藏着对理想社会的热忱，只是不轻易示人。你享受智力挑战，讨厌低效与混乱，是天生的谋略家。偶尔会因过于追求完美而显得孤高，但正是这份淡泊明志的气质，让你在关键时刻能做出影响深远的决策。"},
+{m:"INTP",n:"亚里士多德",d:"荣格八维：Ti-Ne-Si-Fe。你像古希腊的哲人，以逻辑为刀，解剖世界的本质。Ti主导让你对概念精准度要求极高，Ne则让你不断联想、发散。你享受纯粹的知识探索，不为功利，只为理解。你可能有些书卷气，说话喜欢引经据典，但在人群中常显得抽离。你温和而好奇，试图为万物分类，建立自己的知识体系。你的内在世界丰富而有序，是典型的思想者。"},
+{m:"ENTJ",n:"秦始皇",d:"荣格八维：Te-Ni-Se-Fi。你具有强大的执行力和战略野心，是天生的领袖。Te主导让你以结果为导向，高效组织资源，推动变革。Ni赋予你远见，能预见未来的格局。你敢于打破旧秩序，建立新规则。自信、果断，甚至有些专制，但内心也有对认同的渴望。你追求的是宏大叙事，是统一与秩序的象征。"},
+{m:"ENTP",n:"苏格拉底",d:"荣格八维：Ne-Ti-Fe-Si。你像雅典的牛虻，不断追问，挑战常识。Ne主导让你思维跳跃，善于发现可能性，而Ti让你能迅速剖析逻辑漏洞。你喜欢辩论，不是为了赢，而是为了逼近真理。你幽默、机智，常以反诘法启发他人。你讨厌僵化，喜欢探索新观念。你的人生是一场持续的对话，你在其中不断重塑自我。"},
+{m:"INFJ",n:"甘地",d:"荣格八维：Ni-Fe-Ti-Se。你拥有坚定的内在信念与对人性的深刻洞察。Ni让你看到理想社会的图景，Fe则让你对他人苦难感同身受。你像圣雄甘地一样，以非暴力方式追求正义，用精神力量感召他人。你安静却极具影响力，善于用隐喻和象征传递理念。你对自己要求严格，追求意义而非享乐。你的坚持能照亮无数人的道路。"},
+{m:"INFP",n:"圣女贞德",d:"荣格八维：Fi-Ne-Si-Te。你内心燃烧着纯粹的热情与道德感。Fi主导让你有坚定的价值观，Ne则让你看到别人看不到的可能性。你像贞德一样，听从内心的声音，勇敢地站出来。你温柔却坚韧，愿意为信仰付出一切。你善于用故事和象征鼓舞他人，你的力量来自对善的绝对忠诚，那种虽千万人吾往矣的勇气，正是你最动人的特质。"},
+{m:"ENFJ",n:"马丁·路德·金",d:"荣格八维：Fe-Ni-Se-Ti。你天生具有鼓舞人心的能力，能凝聚群体，为共同愿景奋斗。Fe主导让你关注他人情感，Ni则让你有清晰的愿景。你像马丁·路德·金一样，用演说点燃希望，用行动推动变革。你富有魅力，善于沟通，能理解不同人的需求。你追求的是平等与爱。你的热情与感染力，能让世界变得更好。"},
+{m:"ENFP",n:"莎士比亚",d:"荣格八维：Ne-Fi-Te-Si。你充满创意与热情，像莎士比亚一样，能塑造无数鲜活的角色。Ne主导让你思维奔逸，灵感不断，Fi则让你对人性有深刻体察。你善于表达，喜欢用隐喻和戏剧性语言。你好奇心强，讨厌单调，总在寻找新的可能性。正是这种一切皆有可能的开放心态，让你能创作出触动人心的作品。"},
+{m:"ISTJ",n:"乔治·华盛顿"
