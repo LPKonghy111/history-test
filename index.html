@@ -44,7 +44,7 @@ body{font-family:system-ui,sans-serif;background:linear-gradient(145deg,#0b0e14,
 <button class="rb" id="rb">重新测试</button>
 </div>
 </div>
-<script>
+  <script>
 var Q=[
 ["你通常更喜欢：","独处或少数密友相处","参加热闹的聚会","EI"],
 ["你更关注：","现实和具体细节","未来和抽象可能","SN"],
@@ -129,18 +129,9 @@ var C=[
 ["ISFJ","居里夫人","荣格八维：Si-Fe-Ti-Ne。你像居里夫人一样，默默奉献。Si让你在实验室反复实验，Fe让你将镭用于治疗癌症。你谦逊、坚韧，两次获得诺贝尔奖却淡泊名利。你追求的是科学与人类福祉，你的笔记本至今仍有辐射。你是真正的科学圣徒。"],
 ["ESTP","凯撒","荣格八维：Se-Ti-Fe-Ni。你像凯撒一样，行动果断，善于抓住机会。Se让你在战场上所向披靡，Ti让你分析政治局势。你自信、迷人，喜欢我来，我见，我征服。你追求的是权力与荣耀，但也推动改革。你的名字成为皇帝的代名词。"]
 ];
-var i=0,a=[],s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
-function el(id){return document.getElementById(id)}
-function up(){var d=a.filter(function(x){return x!==null}).length;el("pt").textContent=d+" / "+Q.length;el("pf").style.width=(d/Q.length*100)+"%"}
-function show(){
-if(i>=Q.length){el("q").style.display="none";el("r").style.display="flex";el("p").classList.add("h");
-var m=(s.E>=s.I?"E":"I")+(s.S>=s.N?"S":"N")+(s.T>=s.F?"T":"F")+(s.J>=s.P?"J":"P");
-var f=null;for(var k=0;k<C.length;k++){if(C[k][0]===m){f=C[k];break}}if(!f)f=C[0];
-el("rm").textContent=f[0];el("rn").textContent=f[1];
-var d=f[2];if(d.length<400)d+=" 你拥有独特的荣格八维功能组合，在现实生活中会展现出强烈的个人风格。无论是决策方式还是人际互动，你都倾向于跟随内心的判断。历史长河中，与你相似的人物往往在关键时刻发挥重要作用，因为他们坚持自我，不随波逐流。";
 el("rd").innerHTML="<p>"+d+"</p>";return}
 var q=Q[i];el("qt").textContent=q[0];el("o").innerHTML="";
-for(var j=1;j<=2;j++){var b=document.createElement("button");b.className="ob";b.textContent=q[j];b.setAttribute("data-j",j);b.onclick=function(){a[i]=this.getAttribute("data-j")-1;calc();if(i<Q.length-1){i++;show()}else{show()}up()};el("o").appendChild(b)}up()}
+for(var j=1;j<=2;j++){var b=document.createElement("button");b.className="ob";b.textContent=q[j];b.setAttribute("data-j",j);b.onclick=function(){a[i]=this.getAttribute("data-j")-1;calc();i++;show();up()};el("o").appendChild(b)}up()}
 function calc(){s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};for(var k=0;k<Q.length;k++){if(a[k]===null)continue;var d=Q[k][3];if(a[k]===0)s[d[0]]++;else s[d[1]]++}}
 function reset(){i=0;a=[];s={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};el("q").style.display="block";el("r").style.display="none";el("p").classList.remove("h");show()}
 el("rb").onclick=reset;reset();
